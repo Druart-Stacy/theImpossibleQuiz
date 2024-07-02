@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "target": "es2015", // ou "es6"
+      "lib": ["es2015", "dom"], // inclut les bibliothèques ES2015 et DOM
+      "strict": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "skipLibCheck": true
+    },
+    "include": ["app.ts"]
+  }
+  

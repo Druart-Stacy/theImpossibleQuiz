@@ -1,0 +1,173 @@
+// interface Question {
+//     question: string;
+//     answer: any;
+//     type: 'string' | 'number' | 'array';
+//     userAnswer?: any;
+// }
+
+// const questions: Question[] = [
+//     { question: "1. Quelle est la capitale de la France ?", answer: "Paris", type: 'string' },
+//     { question: "2. Quelle est la capitale de la Belgique ?", answer: "Bruxelles", type: 'string' },
+//     { question: "3. Quelle est la capitale de l'Italie ?", answer: "Rome", type: 'string' },
+//     { question: "4. Quelle est la capitale de l'Espagne ?", answer: "Madrid", type: 'string' },
+//     { question: "5. Quelle est la capitale de l'Allemagne ?", answer: "Berlin", type: 'string' },
+//     { question: "6. Quelle est la capitale de l'Autriche ?", answer: "Vienne", type: 'string' },
+//     { question: "7. Quelle est la capitale du Portugal ?", answer: "Lisbonne", type: 'string' },
+//     { question: "8. Quelle est la capitale de la Norvège ?", answer: "Oslo", type: 'string' },
+//     { question: "9. Quelle est la capitale de la Suisse ?", answer: "Berne", type: 'string' },
+//     { question: "10. Quelle est la capitale de la Finlande ?", answer: "Helsinki", type: 'string' }
+// ];
+
+// let currentQuestionIndex = 0;
+// let lives = 3;
+// let timer: number;
+// const appDiv = document.getElementById('app') as HTMLDivElement;
+
+// function renderQuestion() {
+//     //declaration de la fonction renderQuestion,fonction qui'accespte aucun parametre et qui est responsable de l'afficahge 
+//     //de la question ,de la gestion de vie ainssi que du chronometre
+//     clearTimeout(timer);
+//      // arrete du minuteur précédement démarré,la var time doit contenirl'id du minuteur deémarré avec setInterval/setTimeout.En appelant 
+//     //clearTimeout(timer),on s'assureque le minuteur en cours est annulé avant de demarrer un nouveau miniteur pour la nouvelle question.
+ 
+//     appDiv.innerHTML = '';
+//     //réinitialisation du contenu de l'html avec l'id app.En definissant innerHTML a une chaine vide(''),
+//     //l'integralité de l'element appDiv est supprimé,ce qui pemret de répartir avec un espace vide  pour afficher la nouvelle question et ses elemnt associés.
+
+//     if (lives <= 0) {
+//         appDiv.innerHTML = '<p>Game Over!</p>';
+//         return;
+//     }
+
+//     // ce bout de code verifie si le nombre de vies est inferieur ou egale a 0 si'est le cas "Game over" sera affichier et le qcm s'arret.
+
+//     const questionObj = questions[currentQuestionIndex];
+//     const questionDiv = document.createElement('div');
+//     questionDiv.className = 'question';
+
+//     const livesDiv = createLivesDiv();
+//     questionDiv.appendChild(livesDiv);
+
+//     const timerDiv = createTimerDiv();
+//     questionDiv.appendChild(timerDiv);
+
+//     const questionText = document.createElement('p');
+//     questionText.textContent = questionObj.question;
+//     questionDiv.appendChild(questionText);
+
+//     const input = createInput(questionObj);
+//     questionDiv.appendChild(input);
+
+//     const buttonsDiv = createButtonsDiv(input, questionObj);
+//     questionDiv.appendChild(buttonsDiv);
+
+//     appDiv.appendChild(questionDiv);
+
+//     startTimer(timerDiv, input, questionObj);
+// }
+
+// function createLivesDiv(): HTMLDivElement {
+//     const livesDiv = document.createElement('div');
+//     livesDiv.className = 'lives';
+//     livesDiv.textContent = `Lives: ${lives}`;
+//     return livesDiv;
+// }
+
+// function createTimerDiv(): HTMLDivElement {
+//     const timerDiv = document.createElement('div');
+//     timerDiv.className = 'timer';
+//     timerDiv.textContent = `Time left: 10`;
+//     return timerDiv;
+// }
+// function createInput(questionObj: Question): HTMLInputElement | HTMLSelectElement {
+//     let input: HTMLInputElement | HTMLSelectElement;
+
+//     if (questionObj.type === 'string' || questionObj.type === 'number') {
+//         input = document.createElement('input');
+//         input.type = questionObj.type === 'number' ? 'number' : 'text';
+//         input.value = questionObj.userAnswer || '';
+//     } else if (questionObj.type === 'array') {
+//         input = document.createElement('select');
+//         input.multiple = true;
+
+//         const selectInput = input as HTMLSelectElement;
+//         (questionObj.answer as string[]).forEach(option => {
+//             const opt = document.createElement('option');
+//             opt.value = option;
+//             opt.text = option;
+//             selectInput.add(opt);
+//         });
+//     } else {
+//         // Assurez-vous que `input` est toujours initialisé
+//         throw new Error(`Unsupported input type: ${questionObj.type}`);
+//     }
+
+//     return input;
+// }
+
+
+// function createButtonsDiv(input: HTMLInputElement | HTMLSelectElement, questionObj: Question): HTMLDivElement {
+//     const buttonsDiv = document.createElement('div');
+
+//     const retryButton = document.createElement('button');
+//     retryButton.textContent = 'Retry';
+//     retryButton.onclick = () => {
+//         clearInterval(timer);
+//         questionObj.userAnswer = input.value;
+//         if (checkAnswer(input, questionObj)) {
+//             alert('Correct!');
+//             nextQuestion(true);
+//         } else {
+//             alert('Incorrect, please try again.');
+//             lives--;
+//             renderQuestion();
+//         }
+//     };
+//     buttonsDiv.appendChild(retryButton);
+
+//     const nextButton = document.createElement('button');
+//     nextButton.textContent = 'Next';
+//     nextButton.onclick = () => {
+//         clearInterval(timer);
+//         nextQuestion();
+//     };
+//     buttonsDiv.appendChild(nextButton);
+
+//     return buttonsDiv;
+// }
+
+// function startTimer(timerDiv: HTMLDivElement, input: HTMLInputElement | HTMLSelectElement, questionObj: Question) {
+//     let timeLeft = 10;
+//     timer = setInterval(() => {
+//         timeLeft--;
+//         timerDiv.textContent = `Time left: ${timeLeft}`;
+//         if (timeLeft <= 0) {
+//             clearInterval(timer);
+//             lives--;
+//             nextQuestion();
+//         }
+//     }, 1000);
+// }
+
+// function checkAnswer(input: HTMLInputElement | HTMLSelectElement, questionObj: Question): boolean {
+//     if (questionObj.type === 'array') {
+//         const selectedOptions = Array.from((input as HTMLSelectElement).selectedOptions).map(option => option.value);
+//         return JSON.stringify(selectedOptions.sort()) === JSON.stringify((questionObj.answer as string[]).sort());
+//     }
+//     return input.value.toLowerCase() === questionObj.answer.toString().toLowerCase();
+// }
+
+// function nextQuestion(correct: boolean = false) {
+//     if (correct) {
+//         lives++;
+//     }
+//     if (currentQuestionIndex < questions.length - 1) {
+//         currentQuestionIndex++;
+//         renderQuestion();
+//     } else {
+//         appDiv.innerHTML = '<p>Congratulations, you have completed the quiz!</p>';
+//     }
+// }
+
+// // Initial render
+// renderQuestion();
